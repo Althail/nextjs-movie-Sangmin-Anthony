@@ -1,10 +1,11 @@
-import clientPromise from "../../lib/mongodb";
+import { OrmService } from "/services/OrmService";
+import { MongoConfig } from "/services/MongoConfigService";
 
 export default async function handler(req, res) {
-  const client = await clientPromise;
-  const db = client.db("sample_mflix");
-
   switch (req.method) {
+    //?-----
+    //? POST
+    //?-----
     case "POST":
       const body = req.body;
 
@@ -15,8 +16,13 @@ export default async function handler(req, res) {
         console.error(e);
       }
 
+    //?-----
+    //? GET
+    //?-----
     case "GET":
-      const movies = await db.collection("movies").find({}).limit(10).toArray();
+      const movies = await OrmService.connectAndFind(
+        MongoConfig.collections.movies
+      );
 
       res.json({ status: 200, data: movies });
   }
