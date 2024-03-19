@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import { OrmService } from "../../../services/OrmService";
+import { HttpService } from "../../../services/HttpService";
 import { MongoConfig } from "../../../services/MongoConfigService";
 
 export default async function handler(req, res) {
@@ -15,24 +16,29 @@ export default async function handler(req, res) {
         idMovie
       );
 
-      res.json({ status: 200, data: { movie: dbGetMovie } });
+      res.status(200).json(dbGetMovie);
 
     //?-----
     //? PUT
     //?-----
     case "PUT":
-      const body = req.body;
-      const dbPutMovie = await OrmService.connectAndModifyOne(
+      const movie_to_put = req.body;
+      const result = await OrmService.connectAndModifyOne(
         MongoConfig.collections.movies,
-        idMovie,
-        body
+        req.query.idMovie,
+        movie_to_put
       );
-
-      if (dbPutMovie.modifiedCount === 0) {
-        res.json({ status: 400, data: "Movie not found" });
+      if (result.matchedCount === 0) {
+        HttpService.return_http_status_code_and_data(
+          res,
+          404,
+          "Movie Not Found"
+        );
+        return;
+      } else {
+        HttpService.return_http_status_code_and_data(res, 200, "Put Success");
       }
-
-      res.json({ status: 200, data: { movie: dbPutMovie } });
+      break;
 
     //?-----
     //? DELETE

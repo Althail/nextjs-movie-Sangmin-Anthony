@@ -1,6 +1,22 @@
 import { OrmService } from "/services/OrmService";
 import { MongoConfig } from "/services/MongoConfigService";
 
+/**
+ * @swagger
+ * /api/movies:
+ *   get:
+ *     description: Returns movies
+ *     responses:
+ *       200:
+ *         description: Movies List
+ *
+ *   post:
+ *     description: Insert a movie
+ *     responses:
+ *       200:
+ *         description: Movie inserted successfully
+ *
+ */
 export default async function handler(req, res) {
   switch (req.method) {
     //?-----

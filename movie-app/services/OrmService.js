@@ -23,14 +23,18 @@ const _connectAndModifyOne = async (dbName, idObjectToFind, body) => {
   const db = await connectToDB();
   return await db
     .collection(dbName)
-    .updateOne({ _id: ObjectId(idObjectToFind) }, { $set: body });
+    .findOneAndUpdate(
+      { _id: new ObjectId(idObjectToFind) },
+      { $set: body },
+      { returnDocument: "after" }
+    );
 };
 
 const _connectAndDeleteOne = async (dbName, idObjectToFind) => {
   const db = await connectToDB();
   return await db
     .collection(dbName)
-    .deleteOne({ _id: ObjectId(idObjectToFind) });
+    .deleteOne({ _id: new ObjectId(idObjectToFind) });
 };
 
 export const OrmService = {
