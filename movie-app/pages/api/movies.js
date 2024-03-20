@@ -5,17 +5,29 @@ import { MongoConfig } from "/services/MongoConfigService";
  * @swagger
  * /api/movies:
  *   get:
+ *     tags:
+ *      - Movies
  *     description: Returns movies
  *     responses:
  *       200:
  *         description: Movies List
- *
  *   post:
- *     description: Insert a movie
- *     responses:
- *       200:
- *         description: Movie inserted successfully
- *
+ *    tags:
+ *     - Movies
+ *    description: Create movie
+ *    requestBody:
+ *      description: Create a movie
+ *      content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *    responses:
+ *     201:
+ *      description: Movie created
+ *      content:
+ *        application/json:
+ *         schema:
+ *          type: object
  */
 export default async function handler(req, res) {
   switch (req.method) {
@@ -25,12 +37,12 @@ export default async function handler(req, res) {
     case "POST":
       const body = req.body;
 
-      try {
-        db.collection("movies").insertOne(body);
-        res.json({ status: 200, data: "Movie inserted successfully" });
-      } catch (e) {
-        console.error(e);
-      }
+      const movie = await OrmService.connectAndCreate(
+        MongoConfig.collections.movies,
+        body
+      );
+
+      res.json({ status: 201, data: movie });
 
     //?-----
     //? GET

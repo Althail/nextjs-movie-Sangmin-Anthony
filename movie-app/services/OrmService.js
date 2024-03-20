@@ -7,6 +7,11 @@ const connectToDB = async () => {
   return client.db(MongoConfig.databases.mflix);
 };
 
+const _connectAndCreate = async (dbName, body) => {
+  const db = await connectToDB();
+  return await db.collection(dbName).insertOne(body);
+};
+
 const _connectAndFind = async (dbName) => {
   const db = await connectToDB();
   return await db.collection(dbName).find({}).limit(10).toArray();
@@ -42,4 +47,5 @@ export const OrmService = {
   connectAndFineOne: _connectAndFindOne,
   connectAndModifyOne: _connectAndModifyOne,
   connectAndDeleteOne: _connectAndDeleteOne,
+  connectAndCreate: _connectAndCreate,
 };

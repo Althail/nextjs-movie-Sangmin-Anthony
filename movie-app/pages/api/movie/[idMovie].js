@@ -1,8 +1,56 @@
-import { ObjectId } from "mongodb";
 import { OrmService } from "../../../services/OrmService";
 import { HttpService } from "../../../services/HttpService";
 import { MongoConfig } from "../../../services/MongoConfigService";
 
+/**
+ * @swagger
+ * /api/movie/{idMovie}:
+ *   get:
+ *     tags:
+ *      - Movie
+ *     description: Returns movie by id
+ *     parameters:
+ *      - name: idMovie
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *          format: string
+ *     responses:
+ *       200:
+ *         description: Movie by id
+ *   put:
+ *    tags:
+ *     - Movie
+ *    description: Update movie by id
+ *    parameters:
+ *      - name: idMovie
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *          format: string
+ *    requestBody:
+ *      description: Update an existent movie
+ *      content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *   delete:
+ *    tags:
+ *     - Movie
+ *   description: Delete movie by id
+ *   parameters:
+ *     - name: idMovie
+ *       in: path
+ *       required: true
+ *       schema:
+ *        type: string
+ *        format: string
+ *   responses:
+ *     200:
+ *       description: Movie by id
+ */
 export default async function handler(req, res) {
   const { idMovie } = req.query;
 
