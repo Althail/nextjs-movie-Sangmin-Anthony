@@ -19,6 +19,37 @@ import { OrmService } from "../../../../services/OrmService";
  *     responses:
  *       200:
  *         description: Comment by id
+ *   put:
+ *     tags:
+ *      - Comment
+ *     description: Update comment by id
+ *     parameters:
+ *      - name: idComment
+ *        in: path
+ *        required: true
+ *        schema:
+ *         type: string
+ *         format: string
+ *     requestBody:
+ *       description: Update an existent comment
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *   delete:
+ *    tags:
+ *     - Comment
+ *    description: Delete comment by id
+ *    parameters:
+ *      - name: idComment
+ *        in: path
+ *        required: true
+ *        schema:
+ *         type: string
+ *         format: string
+ *    responses:
+ *      200:
+ *       description: Comment by id
  */
 export default async function handler(req, res) {
   const { idMovie, idComment } = req.query;
@@ -60,13 +91,17 @@ export default async function handler(req, res) {
     //? DELETE
     //?-----
     case "DELETE":
-      comment = await OrmService.connectAndDeleteOne(
+      const comment_to_delete = await OrmService.connectAndDeleteOne(
         MongoConfig.collections.comments,
         idComment
       );
-      if (comment === 0) {
-        res.json({ status: 400, data: "Comment not found" });
+      if (comment_to_delete === 0) {
+        HttpService.return_http_status_code_and_data(
+          res,
+          404,
+          "Comment not found"
+        );
       }
-      res.json({ status: 200, data: { comment: comment } });
+      HttpService.return_http_status_code_and_data(res, 200, "Delete Success");
   }
 }
