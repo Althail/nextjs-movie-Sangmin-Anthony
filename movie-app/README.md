@@ -30,3 +30,15 @@ Elle sera hébergée sur le port 3000. Assurez-vous d'avoir configuré une conne
 Il existe 10 endpoints, tous décrits dans le Swagger à : [Swagger](http://localhost:3000/swagger)
 
 Ces endpoints permettent de récupérer des données, de les mettre à jour, de les supprimer ou d'en ajouter.
+
+## Stack utilisé
+
+- Next-js
+- Node.js
+- MongoDB
+- Swagger
+
+# Groupe
+
+- Anthony DURET 
+- Sangmin SHIM 
