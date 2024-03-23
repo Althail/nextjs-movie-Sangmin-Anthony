@@ -19,6 +19,8 @@ import { OrmService } from "../../../../services/OrmService";
  *     responses:
  *       200:
  *         description: Comment by id
+ *       404:
+ *        description: Comment Not Found
  *   put:
  *     tags:
  *      - Comment
@@ -35,7 +37,12 @@ import { OrmService } from "../../../../services/OrmService";
  *       content:
  *         application/json:
  *           schema:
- *             type: object
+ *             $ref: '#/components/schemas/Comment'
+ *     responses:
+ *      200:
+ *       description: Comment updated
+ *      404:
+ *       description: Comment Not Found
  *   delete:
  *    tags:
  *     - Comment
@@ -50,6 +57,28 @@ import { OrmService } from "../../../../services/OrmService";
  *    responses:
  *      200:
  *       description: Comment by id
+ *      404:
+ *       description: Comment Not Found
+ * components:
+ *  schemas:
+ *   Comment:
+ *    type: object
+ *    properties:
+ *     name:
+ *      type: string
+ *      example: John Doe
+ *     email:
+ *      type: string
+ *      example: hello@gmail.com
+ *     text:
+ *      type: string
+ *      example: This is a comment
+ *     date:
+ *      type: string
+ *      format: date-time
+ *      example: 2021-07-20T09:00:00.000Z
+ *
+ *
  */
 export default async function handler(req, res) {
   const { idMovie, idComment } = req.query;
@@ -64,6 +93,14 @@ export default async function handler(req, res) {
         idComment
       );
 
+      if (dbGetComment === null) {
+        HttpService.return_http_status_code_and_data(
+          res,
+          404,
+          "Comment not found"
+        );
+        return;
+      }
       res.status(200).json(dbGetComment);
 
     //?-----

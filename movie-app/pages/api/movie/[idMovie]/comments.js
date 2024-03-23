@@ -18,6 +18,8 @@ import { ObjectId } from "mongodb";
  *     responses:
  *       200:
  *         description: Comments List
+ *       404:
+ *        description: Comments Not Found
  *   post:
  *     tags:
  *      - Comments
@@ -34,7 +36,31 @@ import { ObjectId } from "mongodb";
  *       content:
  *          application/json:
  *            schema:
- *              type: object
+ *              $ref: '#/components/schemas/Comment'
+ *     responses:
+ *      201:
+ *       description: Comment created
+ *      500:
+ *       description: Internal Server Error
+ * components:
+ *  schemas:
+ *   Comment:
+ *    type: object
+ *    properties:
+ *     name:
+ *      type: string
+ *      example: John Doe
+ *     email:
+ *      type: string
+ *      example: hello@gmail.com
+ *     text:
+ *      type: string
+ *      example: This is a comment
+ *     date:
+ *      type: string
+ *      format: date-time
+ *      example: 2021-07-20T09:00:00.000Z
+ *
  */
 export default async function handler(req, res) {
   const client = await clientPromise;

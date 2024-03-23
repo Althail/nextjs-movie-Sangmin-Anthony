@@ -28,7 +28,8 @@ import { MongoConfig } from "/services/MongoConfigService";
  *        application/json:
  *         schema:
  *          type: object
- *
+ *     500:
+ *      description: Internal Server Error
  * components:
  *  schemas:
  *    Movie:
